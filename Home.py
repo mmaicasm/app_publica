@@ -7,8 +7,8 @@ from utils import snowpark
 st.set_page_config(
   page_title = "Home",
   page_icon = "🏠",
-  layout = "wide",
-  initial_sidebar_state = "expanded",
+  layout = "centered",
+  initial_sidebar_state = "collapsed",
   menu_items = {
     'Get Help': 'https://www.hiberus.com/tecnologia/snowflake-ld',
     'Report a bug': None,

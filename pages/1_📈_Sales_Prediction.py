@@ -44,6 +44,9 @@ hide_table_row_index = """
   """
 st.markdown(hide_table_row_index, unsafe_allow_html = True)
 
+# Barra lateral
+st.sidebar.image(image_path_1, width = 75)
+
 # Secciones de la App (Containers)
 st.title("Predicción de ventas con Machine Learning")
 cabecera = st.container()
@@ -55,7 +58,7 @@ features_and_output = st.container()
 with cabecera:
   cabecera.write("""Esta app permite visualizar la previsión de venta mes a mes filtrando en base a ciertas variables ajustables mediante widgets. 
     Los modelos fueron entrenados con datos anonimizados de una empresa del sector Retail.""")
-  cabecera.image([image_path_1,image_path_2], width = 150)
+  cabecera.image(image_path_2, width = 150)
   cabecera.write('---')
   
 # Check de conexión
@@ -67,7 +70,7 @@ if st.session_state['logged'] == True:
   table = ''
   
   # Función para cargar los distintos productos
-  lista_productos = session.sql('SELECT DISTINCT TIPO_PRENDA AS PRODUCTO FROM EVENTO_SNOWFLAKE.MODEL_DATA.MODELO_AGGR_BASE ORDER BY TIPO_PRENDA').to_pandas()['PRODUCTO'].to_list()
+  lista_productos = session.sql('SELECT DISTINCT TIPO_PRENDA AS PRODUCTO FROM EVENTO_SNOWFLAKE.PUBLIC_DATA.DATOS_DEMO ORDER BY TIPO_PRENDA').to_pandas()['PRODUCTO'].to_list()
   
   with col1:
     modelo = st.selectbox(label = 'Modelo', options = lista_modelos, index = 0, help = None)
