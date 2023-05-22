@@ -41,16 +41,3 @@ def guest_connect():
     st.stop()
     
   return session
-
-# function - run sql query and return data
-@st.cache_data(show_spinner = False)
-def query_snowflake(_session, sql) -> pd.DataFrame:
-
-  try:
-    df = _session.sql(sql).to_pandas()
-      
-  except Exception as e:
-    st.error(e)
-    return e
-
-  return df

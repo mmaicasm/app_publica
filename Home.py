@@ -1,23 +1,37 @@
 # Streamlit
 import streamlit as st
+# Snowpark
+from snowflake.snowpark.session import Session
+from snowflake.snowpark.types import Variant
+from snowflake.snowpark.functions import udf,sum,col,array_construct,month,year,call_udf,lit
+# Librerias necesarias
+import numpy as np
+import pandas as pd
 # Funciones necesarias
 from utils import snowpark
 
-# Formato de página
+# Configuración de la página
 st.set_page_config(
-  page_title = "Home",
-  page_icon = "🏠",
+  page_title = "Sales Prediction App",
+  page_icon = "📈",
   layout = "centered",
-  initial_sidebar_state = "collapsed",
+  initial_sidebar_state = "auto",
   menu_items = {
-    'Get Help': 'https://www.hiberus.com/tecnologia/snowflake-ld',
-    'Report a bug': None,
-    'About': "This is an *extremely* cool app powered by Snowpark and Streamlit"
+    "Get Help": "https://www.hiberus.com/tecnologia/snowflake-ld",
+    "Report a bug": None,
+    "About": "This is an *extremely* cool app powered by Snowpark and Streamlit"
   }
 )
 
 # Imagenes
-image_path = "https://raw.githubusercontent.com/mmaicasm/app_publica/main/streamlit_src/snowflake-logo.png"
+image_path_1 = "https://raw.githubusercontent.com/mmaicasm/app_publica/main/streamlit_src/hiberus-logo.png"
+image_path_2 = "https://raw.githubusercontent.com/mmaicasm/app_publica/main/streamlit_src/snowflake-logo.png"
+
+# Variables fijas
+lista_modelos = ["Modelo_1", "Modelo_2"]
+lista_paises = ["Alemania","Austria","Bulgaria","Bélgica","Dinamarca","España","Estados Unidos","Finlandia","Francia","Grecia","Holanda","Irlanda","Italia","México","Polonia","Portugal","Reino Unido","Rumania","Rusia","Suecia"]
+lista_generos = ["Unisex", "Niño", "Niña"]
+lista_productos = []
 
 # Ocultar índices de tablas
 hide_table_row_index = """
@@ -28,9 +42,22 @@ hide_table_row_index = """
   """
 st.markdown(hide_table_row_index, unsafe_allow_html = True)
 
+# Barra lateral
+st.sidebar.image(image_path_1, width = 150)
+
 # Secciones de la App (Containers)
-st.title('Home')
-st.subheader('Conexión a Snowflake mediante Snowpark')
+st.title("Predicción de ventas con Machine Learning")
+cabecera = st.container()
+col1, _, col2 = st.columns([4, 1, 4])
+dataset = st.container()
+features_and_output = st.container()
+
+# Cabecera
+with cabecera:
+  cabecera.write("""Esta app permite visualizar la previsión de venta mes a mes filtrando en base a ciertas variables ajustables mediante widgets. 
+    Los modelos fueron entrenados con datos anonimizados de una empresa del sector Retail.""")
+  cabecera.image(image_path_2, width = 150)
+  cabecera.write('---')
 
 # Inicializar estados
 if 'logged' not in st.session_state:
@@ -38,25 +65,56 @@ if 'logged' not in st.session_state:
   st.session_state['user']  = ''
   st.session_state['role']  = ''
   st.session_state['warehouse']  = ''
+  
+# Conexión forzada (app móvil)
+session = snowpark.guest_connect()
+  
+# Variables dinámicas
+prediction = []
+table = ''
 
-# Widget manual
-with st.form(key = "login"):
+# Función para cargar los distintos productos
+lista_productos = session.sql('SELECT DISTINCT TIPO_PRENDA AS PRODUCTO FROM EVENTO_SNOWFLAKE.PUBLIC_DATA.DATOS_DEMO ORDER BY TIPO_PRENDA').to_pandas()['PRODUCTO'].to_list()
+
+with col1:
+  modelo = st.selectbox(label = 'Modelo', options = lista_modelos, index = 0, help = None)
+  var_1 = st.multiselect(label = 'Pais', options = lista_paises, default = None, max_selections = None, help = None)
+  prediction.append(modelo)
+  prediction.append(var_1)
+
+with col2:
   
-  user = st.text_input(placeholder = 'usuario@hiberus.com', label = 'Usuario', disabled = True)
-  password = st.text_input(type = 'password', label = 'Contraseña', disabled = True)
+  var_2 = st.selectbox(label = 'Producto', options = lista_productos, index = 0, help = None)
+  var_3 = st.radio(label = 'Género', options = lista_generos, index = 0, help = None)
+  prediction.append(var_2)
+  prediction.append(var_3)
   
-  #login = st.form_submit_button("Conectar")
-  guest = st.form_submit_button("Acceder como invitado")
+# Función para cargar los datos según los widgets
+@st.cache_data(show_spinner = False)
+def load_data(_session, prediction):
   
-  if guest:
-    # Crear sesión
-    with st.spinner('Conectando a Snowflake...'):
-      session = snowpark.guest_connect()
+  if prediction[0] == 'X':
+    table = 'xxxxxxxx'
+  elif prediction[0] == 'X':
+    table = 'xxxxxxxx'
+  elif prediction[0] == 'X':
+    table = 'xxxxxxxx'
+  else:
+    st.error('Modelo no reconococido')
     
-    # Informar conexión correcta
-    st.success('Sesión confirmada!')
-    st.snow()
+  if prediction[3] != 'Unisex':
+    filtro_gen = f' AND GENERO = {prediction[3]}'
+  else:
+    filtro_gen = ''
+  
+  df = _session.sql(f'SELECT XXXXX FROM {table} WHERE PAIS in ({prediction[1]}) AND TIPO_PRENDA = {prediction[2]} {filtro_gen}').to_pandas()
+  df['DATE'] = pd.to_datetime(df['DATE'])
+  return df
+
+# Gráfico
+with dataset:
+  dataset.header("Predicted revenue")
+  @st.cache_data(show_spinner = False)
+  def predict(prediction):
     
-    # Mostrar parámetros de la sesión
-    st.write('Parámetros de la sesión:')
-    st.table(session.sql('select current_user(), current_role()').collect())
+    df = session.sql(f"SELECT xxx=").to_pandas()
