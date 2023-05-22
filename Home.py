@@ -15,7 +15,7 @@ st.set_page_config(
   page_title = "Sales Prediction App",
   page_icon = "📈",
   layout = "centered",
-  initial_sidebar_state = "auto",
+  initial_sidebar_state = "collapsed",
   menu_items = {
     "Get Help": "https://www.hiberus.com/tecnologia/snowflake-ld",
     "Report a bug": None,
@@ -42,9 +42,6 @@ hide_table_row_index = """
   """
 st.markdown(hide_table_row_index, unsafe_allow_html = True)
 
-# Barra lateral
-st.sidebar.image(image_path_1, width = 150)
-
 # Secciones de la App (Containers)
 st.title("Predicción de ventas con Machine Learning")
 cabecera = st.container()
@@ -56,7 +53,7 @@ features_and_output = st.container()
 with cabecera:
   cabecera.write("""Esta app permite visualizar la previsión de venta mes a mes filtrando en base a ciertas variables ajustables mediante widgets. 
     Los modelos fueron entrenados con datos anonimizados de una empresa del sector Retail.""")
-  cabecera.image(image_path_2, width = 150)
+  cabecera.image([image_path_1,image_path_2], width = 150)
   cabecera.write('---')
 
 # Inicializar estados
