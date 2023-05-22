@@ -14,7 +14,7 @@ from utils import snowpark
 st.set_page_config(
   page_title = "Sales Prediction App",
   page_icon = "📈",
-  layout = "wide",
+  layout = "centered",
   initial_sidebar_state = "auto",
   menu_items = {
     "Get Help": "https://www.hiberus.com/tecnologia/snowflake-ld",
@@ -33,8 +33,6 @@ lista_paises = ["Alemania","Austria","Bulgaria","Bélgica","Dinamarca","España"
 lista_generos = ["Unisex", "Niño", "Niña"]
 lista_productos = []
 
-
-
 # Ocultar índices de tablas
 hide_table_row_index = """
   <style>
@@ -45,7 +43,7 @@ hide_table_row_index = """
 st.markdown(hide_table_row_index, unsafe_allow_html = True)
 
 # Barra lateral
-st.sidebar.image(image_path_1, width = 75)
+st.sidebar.image(image_path_1, width = 150)
 
 # Secciones de la App (Containers)
 st.title("Predicción de ventas con Machine Learning")
@@ -60,6 +58,10 @@ with cabecera:
     Los modelos fueron entrenados con datos anonimizados de una empresa del sector Retail.""")
   cabecera.image(image_path_2, width = 150)
   cabecera.write('---')
+  
+# Conexión forzada (app móvil)
+if st.session_state['logged'] == False:
+  session = snowpark.guest_connect()
   
 # Check de conexión
 if st.session_state['logged'] == True:
