@@ -17,7 +17,7 @@ st.set_page_config(
 )
 
 # Imagenes
-image_path = "https://raw.githubusercontent.com/mmaicasm/app_publica/main/streamlit_src/snowflake-logo.jpg"
+image_path = "https://raw.githubusercontent.com/mmaicasm/app_publica/main/streamlit_src/snowflake-logo.png"
 
 # Ocultar índices de tablas
 hide_table_row_index = """
