@@ -43,13 +43,14 @@ hide_table_row_index = """
 st.markdown(hide_table_row_index, unsafe_allow_html = True)
 
 # Secciones de la App (Containers)
-icol1, icol2, icol3 = st.columns(3)
-
+icol1, icol2, icol3, icol4 = st.columns(4)
 with icol1:
   st.write(' ')
 with icol2:
-  st.image([image_path_1,image_path_2], use_column_width = True)
+  st.image(image_path_1, use_column_width = True)
 with icol3:
+  st.image(image_path_2, use_column_width = True)
+with icol4:
   st.write(' ')
 st.title("Predicción de ventas con Machine Learning")
 cabecera = st.container()
