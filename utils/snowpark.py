@@ -18,7 +18,7 @@ guest_connection_parameters = {
 }
 
 # Funciones con memoria
-@st.cache_resource(show_spinner = False)
+#@st.cache_resource(show_spinner = False)
 def guest_connect():
   # Se randomiza el usuario si aún no tiene
   if st.session_state['user'] == '':
