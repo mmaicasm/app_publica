@@ -38,11 +38,8 @@ def guest_connect():
       st.session_state['session'] = session
   
   except Exception as e:
-    st.write(e.error_code)
-    if e.error_code == '08001':
-      st.warning('La sesión ha caducado, por favor refresca la página')
-    else:
-      st.error(e)
+    st.write(guest_connection_parameters)
+    st.error(e)
     st.stop()
     
   return session
@@ -57,7 +54,7 @@ def query_snowflake(_session, sql) -> pd.DataFrame:
   except Exception as e:
     if e.error_code == '1304':
       _session.close()
-      st.warning('La sesión ha caducado, por favor refresca la página')
+      st.warning('La sesión ha caducado, por favor recarga la app')
     else:
       st.error(e)
     st.stop()
