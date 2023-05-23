@@ -51,7 +51,9 @@ def query_snowflake(_session, sql) -> pd.DataFrame:
       
   except Exception as e:
     st.error(e)
-    return e
+    st.write(e)
+    st.write(e.error_code)
+    st.stop()
 
   return df
 
