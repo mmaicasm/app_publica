@@ -50,9 +50,11 @@ def query_snowflake(_session, sql) -> pd.DataFrame:
     df = _session.sql(sql).to_pandas()
       
   except Exception as e:
-    st.error(e)
-    st.write(e)
-    st.write(e.error_code)
+    if e.error_code == 1304:
+      _session.close()
+      st.warning('La sesión ha caducado, por favor recarga la app')
+    else:
+      st.error(e)
     st.stop()
 
   return df
