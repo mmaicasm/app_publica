@@ -18,10 +18,10 @@ guest_connection_parameters = {
 }
 
 # Funciones con memoria
-#@st.cache_resource(show_spinner = False)
+@st.cache_resource(show_spinner = False)
 def guest_connect():
   # Se randomiza el usuario si aún no tiene
-  if st.session_state['user'] == '':
+  if guest_connection_parameters["user"] == 'STREAMLIT_GUEST_':
     n = ra.randint(1,10)
     guest_connection_parameters["user"] += str(n)
   
@@ -38,7 +38,6 @@ def guest_connect():
       st.session_state['session'] = session
   
   except Exception as e:
-    st.write(guest_connection_parameters)
     st.error(e)
     st.stop()
     
