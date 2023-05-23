@@ -43,7 +43,14 @@ hide_table_row_index = """
 st.markdown(hide_table_row_index, unsafe_allow_html = True)
 
 # Secciones de la App (Containers)
-st.image([image_path_1,image_path_2], width = 100)
+icol1, icol2, icol3 = st.columns(3)
+
+with icol1:
+  st.write(' ')
+with icol2:
+  st.image([image_path_1,image_path_2], width = 100)
+with icol3:
+  st.write(' ')
 st.title("Predicción de ventas con Machine Learning")
 cabecera = st.container()
 col1, _, col2 = st.columns([4, 1, 4])
@@ -54,7 +61,6 @@ features_and_output = st.container()
 with cabecera:
   cabecera.write("""Esta app permite visualizar la previsión de venta mes a mes filtrando en base a ciertas variables ajustables mediante widgets. 
     Los modelos fueron entrenados con datos anonimizados de una empresa del sector Retail.""")
-  #cabecera.image([image_path_1,image_path_2], width = 150)
   cabecera.write('---')
 
 # Inicializar estados
