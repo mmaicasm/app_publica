@@ -38,7 +38,7 @@ def guest_connect():
       st.session_state['session'] = session
   
   except Exception as e:
-    st.error('Usuario y/o contraseña erróneos')
+    st.error(e)
     st.stop()
     
   return session
