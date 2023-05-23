@@ -13,7 +13,8 @@ guest_connection_parameters = {
   "user": st.secrets["guest_user"],
   "password": st.secrets["guest_password"],
   "role": "STREAMLIT_READ",
-  "warehouse": "STREAMLIT_WH"
+  "warehouse": "STREAMLIT_WH",
+  "client_session_keep_alive": True
 }
 
 # Funciones con memoria
