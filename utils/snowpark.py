@@ -2,7 +2,6 @@
 import streamlit as st
 # Snowpark
 from snowflake.snowpark.session import Session
-from snowflake.snowpark import DataFrame
 # Librerias necesarias
 import pandas as pd
 import random as ra
@@ -64,23 +63,18 @@ def query_snowflake(_session, sql) -> pd.DataFrame:
 @st.cache_data(show_spinner = False)
 def load_data(_session, prediction) -> pd.DataFrame:
   
-  if prediction[0] == 'X':
-    table = 'xxxxxxxx'
-  elif prediction[0] == 'X':
-    table = 'xxxxxxxx'
-  elif prediction[0] == 'X':
-    table = 'xxxxxxxx'
+  table = 'EVENTO_SNOWFLAKE.PUBLIC_DATA.TEST_PREVISION'
+  
+  if len(prediction[1]) > 1:
+    filtro = f"PAIS = '{prediction[0]}' AND TIPO_PRENDA in {tuple(prediction[1])}"
   else:
-    st.error('Modelo no reconococido')
-    
-  if prediction[3] != 'Unisex':
-    filtro_gen = f' AND GENERO = {prediction[3]}'
-  else:
-    filtro_gen = ''
+    filtro = f"PAIS = '{prediction[0]}' AND TIPO_PRENDA = '{prediction[1][0]}'"
+  order = 'ORDER BY YEAR, MONTH, TIPO_PRENDA, GENERO'
+  
+  query = f'SELECT YEAR, MONTH, MES, TIPO_PRENDA, GENERO, CANTIDAD_PEDIDA FROM {table} WHERE {filtro} {order}'
     
   try:
-    df = _session.sql(f'SELECT XXXXX FROM {table} WHERE PAIS in ({prediction[1]}) AND TIPO_PRENDA = {prediction[2]} {filtro_gen}').to_pandas()
-    #df['DATE'] = pd.to_datetime(df['DATE'])
+    df = _session.sql(query).to_pandas()
   except Exception as e:
     st.error(e)
     return e
