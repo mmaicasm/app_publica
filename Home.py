@@ -72,7 +72,8 @@ prediction = []
 table = ''
 
 # Función para cargar los distintos productos
-lista_productos = session.sql('SELECT DISTINCT TIPO_PRENDA AS PRODUCTO FROM EVENTO_SNOWFLAKE.PUBLIC_DATA.DATOS_DEMO ORDER BY TIPO_PRENDA').to_pandas()['PRODUCTO'].to_list()
+#lista_productos = session.sql('SELECT DISTINCT TIPO_PRENDA AS PRODUCTO FROM EVENTO_SNOWFLAKE.PUBLIC_DATA.DATOS_DEMO ORDER BY TIPO_PRENDA').to_pandas()['PRODUCTO'].to_list()
+lista_productos = snowpark.query_snowflake(session, 'SELECT DISTINCT TIPO_PRENDA AS PRODUCTO FROM EVENTO_SNOWFLAKE.PUBLIC_DATA.DATOS_DEMO ORDER BY TIPO_PRENDA')['PRODUCTO'].to_list()
 
 with col1:
   modelo = st.selectbox(label = 'Modelo', options = lista_modelos, index = 0, help = None)
@@ -86,28 +87,6 @@ with col2:
   var_3 = st.radio(label = 'Género', options = lista_generos, index = 0, help = None)
   prediction.append(var_2)
   prediction.append(var_3)
-  
-# Función para cargar los datos según los widgets
-@st.cache_data(show_spinner = False)
-def load_data(_session, prediction):
-  
-  if prediction[0] == 'X':
-    table = 'xxxxxxxx'
-  elif prediction[0] == 'X':
-    table = 'xxxxxxxx'
-  elif prediction[0] == 'X':
-    table = 'xxxxxxxx'
-  else:
-    st.error('Modelo no reconococido')
-    
-  if prediction[3] != 'Unisex':
-    filtro_gen = f' AND GENERO = {prediction[3]}'
-  else:
-    filtro_gen = ''
-  
-  df = _session.sql(f'SELECT XXXXX FROM {table} WHERE PAIS in ({prediction[1]}) AND TIPO_PRENDA = {prediction[2]} {filtro_gen}').to_pandas()
-  df['DATE'] = pd.to_datetime(df['DATE'])
-  return df
 
 # Gráfico
 with dataset:

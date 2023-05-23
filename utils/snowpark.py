@@ -41,3 +41,43 @@ def guest_connect():
     st.stop()
     
   return session
+
+# function - run sql query and return data
+@st.cache_data(show_spinner = False)
+def query_snowflake(_session, sql) -> pd.DataFrame:
+
+  try:
+    df = _session.sql(sql).to_pandas()
+      
+  except Exception as e:
+    st.error(e)
+    return e
+
+  return df
+
+# Función para cargar los datos según los widgets
+@st.cache_data(show_spinner = False)
+def load_data(_session, prediction) -> pd.DataFrame:
+  
+  if prediction[0] == 'X':
+    table = 'xxxxxxxx'
+  elif prediction[0] == 'X':
+    table = 'xxxxxxxx'
+  elif prediction[0] == 'X':
+    table = 'xxxxxxxx'
+  else:
+    st.error('Modelo no reconococido')
+    
+  if prediction[3] != 'Unisex':
+    filtro_gen = f' AND GENERO = {prediction[3]}'
+  else:
+    filtro_gen = ''
+    
+  try:
+    df = _session.sql(f'SELECT XXXXX FROM {table} WHERE PAIS in ({prediction[1]}) AND TIPO_PRENDA = {prediction[2]} {filtro_gen}').to_pandas()
+    #df['DATE'] = pd.to_datetime(df['DATE'])
+  except Exception as e:
+    st.error(e)
+    return e
+  
+  return df
