@@ -76,7 +76,7 @@ def draw(_session, prediction):
   
   bars = alt.Chart(df).mark_bar().encode(
     x = alt.X("MES", sort = months, title = 'Mes'),
-    y = alt.Y("UNIDADES", type = "quantitative", title = "Unidades vendidas"),
+    y = alt.Y("UNIDADES", type = "quantitative", axis=alt.Axis(labels=False), title = "Unidades vendidas"),
     color = alt.Color("PRODUCTO", legend = alt.Legend(orient = "top", title = ""), title = 'Producto'),
     opacity = alt.condition(alt.datum.PREDICTION == 1, alt.value(1), alt.value(0.5)),
   )
