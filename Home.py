@@ -15,7 +15,7 @@ from utils import snowpark
 st.set_page_config(
   page_title = "Sales Prediction App",
   page_icon = "📈",
-  layout = "centered",
+  layout = "wide",
   initial_sidebar_state = "collapsed",
   menu_items = {
     "Get Help": "https://www.hiberus.com/tecnologia/snowflake-ld",
@@ -30,7 +30,7 @@ image_path_2 = "https://raw.githubusercontent.com/mmaicasm/app_publica/main/stre
 
 # Variables fijas
 lista_paises = ["Alemania","Inglaterra","Italia"]
-lista_productos = ["Pantalón largo", "Pantalón corto"]
+lista_productos = ["Pantalón largo", "Falda", "Leggins"]
 
 # Ocultar índices de tablas
 hide_table_row_index = """
