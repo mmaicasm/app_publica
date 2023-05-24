@@ -52,7 +52,8 @@ def query_snowflake(_session, sql) -> pd.DataFrame:
   except Exception as e:
     if e.error_code == '1304':
       _session.close()
-      st.warning('La sesión ha caducado, por favor recarga la app')
+      st.cache_resource.clear()
+      st.warning('La sesión ha caducado, por favor recarga la página')
     else:
       st.error(e)
     st.stop()
@@ -63,15 +64,15 @@ def query_snowflake(_session, sql) -> pd.DataFrame:
 @st.cache_data(show_spinner = False)
 def load_data(_session, prediction) -> pd.DataFrame:
   
-  table = 'EVENTO_SNOWFLAKE.PUBLIC_DATA.TEST_PREVISION'
+  table = 'EVENTO_SNOWFLAKE.PUBLIC_DATA.PREDICTION_DEMO'
   
   if len(prediction[1]) > 1:
-    filtro = f"PAIS = '{prediction[0]}' AND TIPO_PRENDA in {tuple(prediction[1])}"
+    filtro = f"PAIS = '{prediction[0]}' AND PRODUCTO in {tuple(prediction[1])}"
   else:
-    filtro = f"PAIS = '{prediction[0]}' AND TIPO_PRENDA = '{prediction[1][0]}'"
-  order = 'ORDER BY YEAR, MONTH, TIPO_PRENDA, GENERO'
+    filtro = f"PAIS = '{prediction[0]}' AND PRODUCTO = '{prediction[1][0]}'"
+  cols = 'YEAR, MONTH, MES, PRODUCTO, GENERO'
   
-  query = f'SELECT YEAR, MONTH, MES, TIPO_PRENDA, GENERO, CANTIDAD_PEDIDA FROM {table} WHERE {filtro} {order}'
+  query = f'SELECT YEAR, MONTH, MES, PRODUCTO, GENERO, SUM(UNIDADES) AS UNIDADES FROM {table} WHERE {filtro} GROUP BY {cols} ORDER BY {cols}'
     
   try:
     df = _session.sql(query).to_pandas()

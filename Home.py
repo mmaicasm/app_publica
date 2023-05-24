@@ -41,27 +41,6 @@ hide_table_row_index = """
   """
 st.markdown(hide_table_row_index, unsafe_allow_html = True)
 
-# Función para dibujar el gráfico
-def draw(_session, prediction):
-  df = snowpark.load_data(_session, prediction)
-  
-  months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
-  
-  bars = alt.Chart(df).mark_bar().encode(
-    x = alt.X("MES", sort = months, title = 'Mes'),
-    y = alt.Y("CANTIDAD_PEDIDA", title = "Unidades vendidas"),
-    color = alt.Color("TIPO_PRENDA", legend = alt.Legend(orient = "top", title = ""), title = 'Producto'),
-    opacity = alt.condition(alt.datum.YEAR == 2022 and alt.datum.MES == "Jun", alt.value(1), alt.value(0.5)),
-  )
-  chart = alt.layer(bars).resolve_scale(y = "independent")
-  chart = chart.configure_view(strokeWidth=0).configure_axisY(domain=False).configure_axis(labelColor="#808495", tickColor="#e6eaf1", gridColor="#e6eaf1", domainColor="#e6eaf1", titleFontWeight=600, titlePadding=10, labelPadding=5, labelFontSize=14).configure_range(category=["#FFE08E", "#03C0F2", "#FFAAAB", "#995EFF"])
-  
-  try:
-    st.altair_chart(chart, use_container_width = True)
-  except Exception as e:
-    st.error(e)
-    st.stop()
-
 # Secciones de la App (Containers)
 icol1, icol2, icol3, icol4, icol5 = st.columns(5)
 with icol1:
@@ -74,7 +53,7 @@ with icol4:
   st.image(image_path_2, use_column_width = True)
 with icol5:
   st.write(' ')
-st.title("Predicción de ventas con Machine Learning")
+st.title("Predicción de ventas con ML")
 cabecera = st.container()
 col1, _, col2 = st.columns([4, 1, 4])
 dataset = st.container()
@@ -95,6 +74,31 @@ if 'logged' not in st.session_state:
   
 # Conexión forzada (app móvil)
 session = snowpark.guest_connect()
+
+# Función para dibujar el gráfico
+def draw(_session, prediction):
+  df = snowpark.load_data(_session, prediction)
+  
+  months = [
+    "22-Ene", "22-Feb", "22-Mar", "22-Abr", "22-May", "22-Jun", "22-Jul", "22-Ago", "22-Sep", "22-Oct", "22-Nov", "22-Dic",
+    "23-Ene", "23-Feb", "23-Mar", "23-Abr", "23-May", "23-Jun", "23-Jul", "23-Ago", "23-Sep", "23-Oct", "23-Nov", "23-Dic",
+    "24-Ene", "24-Feb", "24-Mar", "24-Abr"
+  ]
+  
+  bars = alt.Chart(df).mark_bar().encode(
+    x = alt.X("MES", sort = months, title = 'Mes'),
+    y = alt.Y("UNIDADES", title = "Unidades vendidas"),
+    color = alt.Color("PRODUCTO", legend = alt.Legend(orient = "top", title = ""), title = 'Producto'),
+    opacity = alt.condition(alt.datum.MES == "23-Jun", alt.value(1), alt.value(0.5)),
+  )
+  chart = alt.layer(bars).resolve_scale(y = "independent")
+  chart = chart.configure_view(strokeWidth=0).configure_axisY(domain=False).configure_axis(labelColor="#808495", tickColor="#e6eaf1", gridColor="#e6eaf1", domainColor="#e6eaf1", titleFontWeight=600, titlePadding=10, labelPadding=5, labelFontSize=14).configure_range(category=["#FFE08E", "#03C0F2", "#FFAAAB", "#995EFF"])
+  
+  try:
+    st.altair_chart(chart, use_container_width = True)
+  except Exception as e:
+    st.error(e)
+    st.stop()
   
 # Variables dinámicas
 prediction = []
