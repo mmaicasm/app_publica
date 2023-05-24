@@ -30,7 +30,7 @@ image_path_2 = "https://raw.githubusercontent.com/mmaicasm/app_publica/main/stre
 
 # Variables fijas
 lista_paises = ["Alemania", "Reino Unido"]
-lista_productos_GB = ["Pantalón largo", "Falda", "Leggins"]
+lista_productos_GB = ["Pantalón largo", "Falda", "Leggings"]
 lista_productos_DE = ["Pantalón largo", "Falda", "Camiseta manga larga"]
 
 # Ocultar índices de tablas
