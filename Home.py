@@ -89,7 +89,7 @@ def draw(_session, prediction):
     color = alt.Color("PRODUCTO", legend = alt.Legend(orient = "top", title = ""), title = 'Producto'),
     opacity = alt.condition(alt.datum.MES == "23-Jun", alt.value(1), alt.value(0.5)),
   )
-  chart = alt.layer(bars).resolve_scale(y = "independent")
+  chart = alt.layer(bars).resolve_scale(y = "shared")
   chart = chart.configure_view(strokeWidth=0).configure_axisY(domain=False).configure_axis(labelColor="#808495", tickColor="#e6eaf1", gridColor="#e6eaf1", domainColor="#e6eaf1", titleFontWeight=600, titlePadding=10, labelPadding=5, labelFontSize=14).configure_range(category=["#FFE08E", "#03C0F2", "#FFAAAB", "#995EFF"])
   
   try:
