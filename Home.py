@@ -29,8 +29,9 @@ image_path_1 = "https://raw.githubusercontent.com/mmaicasm/app_publica/main/stre
 image_path_2 = "https://raw.githubusercontent.com/mmaicasm/app_publica/main/streamlit_src/snowflake-logo.png"
 
 # Variables fijas
-lista_paises = ["Alemania","Inglaterra","Italia"]
-lista_productos = ["Pantalón largo", "Falda", "Leggins"]
+lista_paises = ["Alemania", "Reino Unido"]
+lista_productos_GB = ["Pantalón largo", "Falda", "Leggins"]
+lista_productos_DE = ["Pantalón largo", "Falda", "Camiseta manga larga"]
 
 # Ocultar índices de tablas
 hide_table_row_index = """
@@ -95,7 +96,10 @@ with col1:
   var_1 = st.selectbox(label = 'Pais', options = lista_paises, index = 0, help = None)
 
 with col2:
-  var_2 = st.multiselect(label = 'Producto', options = lista_productos, default = None, max_selections = None, help = None)
+  if var_1 == 'Alemania':
+    var_2 = st.multiselect(label = 'Producto', options = lista_productos_DE, default = None, max_selections = None, help = None)
+  elif var_1 == 'Reino Unido':
+    var_2 = st.multiselect(label = 'Producto', options = lista_productos_GB, default = None, max_selections = None, help = None)
 
 prediction.append(var_1)
 prediction.append(var_2)

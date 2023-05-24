@@ -70,9 +70,9 @@ def load_data(_session, prediction) -> pd.DataFrame:
     filtro = f"PAIS = '{prediction[0]}' AND PRODUCTO in {tuple(prediction[1])}"
   else:
     filtro = f"PAIS = '{prediction[0]}' AND PRODUCTO = '{prediction[1][0]}'"
-  cols = 'YEAR, MONTH, MES, PRODUCTO, GENERO'
+  cols = 'YEAR, MONTH, MES, PRODUCTO'
   
-  query = f'SELECT YEAR, MONTH, MES, PRODUCTO, GENERO, SUM(UNIDADES) AS UNIDADES FROM {table} WHERE {filtro} GROUP BY {cols} ORDER BY {cols}'
+  query = f'SELECT YEAR, MONTH, MES, PRODUCTO, SUM(UNIDADES) AS UNIDADES FROM {table} WHERE {filtro} GROUP BY {cols} ORDER BY {cols}'
     
   try:
     df = _session.sql(query).to_pandas()
