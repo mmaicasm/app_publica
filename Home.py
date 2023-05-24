@@ -15,7 +15,7 @@ from utils import snowpark
 st.set_page_config(
   page_title = "Sales Prediction App",
   page_icon = "📈",
-  layout = "wide",
+  layout = "centered",
   initial_sidebar_state = "collapsed",
   menu_items = {
     "Get Help": "https://www.hiberus.com/tecnologia/snowflake-ld",
