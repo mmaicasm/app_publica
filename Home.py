@@ -29,7 +29,7 @@ image_path_1 = "https://raw.githubusercontent.com/mmaicasm/app_publica/main/stre
 image_path_2 = "https://raw.githubusercontent.com/mmaicasm/app_publica/main/streamlit_src/snowflake-logo.png"
 
 # Variables fijas
-lista_paises = ["Alemania","Holanda","Italia"]
+lista_paises = ["Alemania","Inglaterra","Italia"]
 lista_productos = ["Pantalón largo", "Pantalón corto"]
 
 # Ocultar índices de tablas
@@ -56,8 +56,6 @@ with icol5:
 st.title("Predicción de ventas con ML")
 cabecera = st.container()
 col1, _, col2 = st.columns([4, 1, 4])
-dataset = st.container()
-features_and_output = st.container()
 
 # Cabecera
 with cabecera:
@@ -87,7 +85,7 @@ def draw(_session, prediction):
   
   bars = alt.Chart(df).mark_bar().encode(
     x = alt.X("MES", sort = months, title = 'Mes'),
-    y = alt.Y("UNIDADES", title = "Unidades vendidas"),
+    y = alt.Y("UNIDADES", type = "quantitative", title = "Unidades vendidas"),
     color = alt.Color("PRODUCTO", legend = alt.Legend(orient = "top", title = ""), title = 'Producto'),
     opacity = alt.condition(alt.datum.MES == "23-Jun", alt.value(1), alt.value(0.5)),
   )
@@ -95,7 +93,8 @@ def draw(_session, prediction):
   chart = chart.configure_view(strokeWidth=0).configure_axisY(domain=False).configure_axis(labelColor="#808495", tickColor="#e6eaf1", gridColor="#e6eaf1", domainColor="#e6eaf1", titleFontWeight=600, titlePadding=10, labelPadding=5, labelFontSize=14).configure_range(category=["#FFE08E", "#03C0F2", "#FFAAAB", "#995EFF"])
   
   try:
-    st.altair_chart(chart, use_container_width = True)
+    #st.altair_chart(chart, use_container_width = True)
+    st.altair_chart(chart)
   except Exception as e:
     st.error(e)
     st.stop()
@@ -113,6 +112,5 @@ prediction.append(var_1)
 prediction.append(var_2)
 
 # Gráfico
-with dataset:
-  if prediction[0] and prediction[1]:
-    draw(session, prediction)
+if prediction[0] and prediction[1]:
+  draw(session, prediction)
