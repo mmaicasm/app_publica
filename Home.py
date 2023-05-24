@@ -83,8 +83,7 @@ def draw(_session, prediction):
   chart = chart.configure_view(strokeWidth=0).configure_axisY(domain=False).configure_axis(labelColor="#808495", tickColor="#e6eaf1", gridColor="#e6eaf1", domainColor="#e6eaf1", titleFontWeight=600, titlePadding=10, labelPadding=5, labelFontSize=14).configure_range(category=["#FFE08E", "#03C0F2", "#FFAAAB", "#995EFF"])
   
   try:
-    #st.altair_chart(chart, use_container_width = True)
-    st.altair_chart(chart)
+    st.altair_chart(chart, use_container_width = True)
   except Exception as e:
     st.error(e)
     st.stop()
